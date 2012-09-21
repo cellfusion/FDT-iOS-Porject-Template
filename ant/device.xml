@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="iOS device">
+   <property name="DeviceName" value="ios-simulator" />
+   <property name="PlatformName" value="ios" />
+   
+   <target name="package_test">
+      <antcall target="uninstall"/>
+      
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE" message="Error:certificate notting..."/>
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE" message="Error:provisioning file notting..."/>
+      
+      <echo message="package" />
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-test"/>
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            <arg value="-keystore"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE}"/>
+            <arg value="-storepass"/>
+            <arg value="${developPassword}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}"/>
+            <arg line="${contentsOption}"/>
+         </exec>
+         
+      <antcall target="install"/>
+   </target>
+      
+   <target name="package_test_interpreter">
+      <antcall target="uninstall"/>
+      
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE" message="Error:certificate notting..."/>
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE" message="Error:provisioning file notting..."/>
+      
+      <echo message="package" />
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-test-interpreter"/>
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            <arg value="-keystore"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE}"/>
+            <arg value="-storepass"/>
+            <arg value="${developPassword}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}"/>
+            <arg line="${contentsOption}"/>
+         </exec>
+         
+      <antcall target="install"/>
+   </target>
+   
+   <target name="package_debug">
+      <antcall target="uninstall"/>
+      
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE" message="Error:certificate notting..."/>
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE" message="Error:provisioning file notting..."/>
+      
+         <echo message="package" />
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-debug"/>
+            <arg value="-connect"/>
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            <arg value="-keystore"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE}"/>
+            <arg value="-storepass"/>
+            <arg value="${developPassword}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}"/>
+            <arg line="${contentsOption}"/>
+         </exec>  
+      
+      <antcall target="install"/>
+      <fdt.startDebugger projectname="${FDTProject}" switchperspectiveonbreakpoint="false"/>
+   </target>
+
+   <target name="package_debug_interpreter">
+      <antcall target="uninstall"/>
+      
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE" message="Error:certificate notting..."/>
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE" message="Error:provisioning file notting..."/>
+      
+         <echo message="package" />
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-debug-interpreter"/>
+            <arg value="-connect"/>
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            <arg value="-keystore"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE}"/>
+            <arg value="-storepass"/>
+            <arg value="${developPassword}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}"/>
+            <arg line="${contentsOption}"/>
+         </exec>  
+      
+      <antcall target="install"/>
+      <fdt.startDebugger projectname="${FDTProject}" switchperspectiveonbreakpoint="false"/>
+   </target>
+
+   <target name="package_app_store">
+      <antcall target="uninstall"/>
+      
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE.RELEASE" message="Error:certificate release notting..."/>
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE.RELEASE" message="Error:provisioning release file notting..."/>
+      
+      <echo message="package" />
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-test"/>
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            <arg value="-keystore"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE.RELEASE}"/>
+            <arg value="-storepass"/>
+            <arg value="${releasePassword}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE.RELEASE}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}"/>
+            <arg line="${contentsOption}"/>
+         </exec>
+         
+      <antcall target="install"/>
+   </target>
+
+   <target name="package_ad_hoc">
+      <antcall target="uninstall"/>
+      
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE.RELEASE" message="Error:certificate release notting..."/>
+      <fail unless="com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE.RELEASE" message="Error:provisioning release file notting..."/>
+      
+      <echo message="package" />
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-package"/>
+            <arg value="-target"/>
+            <arg value="ipa-test"/>
+            <arg value="-storetype"/>
+            <arg value="pkcs12"/>
+            <arg value="-keystore"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.CERTIFICATE.RELEASE}"/>
+            <arg value="-storepass"/>
+            <arg value="${releasePassword}"/>
+            <arg value="-provisioning-profile"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.SIGNATURE.PROVISIONING.FILE.RELEASE}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+            <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}"/>
+            <arg line="${contentsOption}"/>
+         </exec>
+         
+      <antcall target="install"/>
+   </target>
+
+   <target name="install">
+      <echo message="install" />
+      
+      <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-installApp"/>
+            <arg value="-platform"/>
+            <arg value="ios"/>
+            <arg value="-package"/>
+         <arg value="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION}"/>
+         </exec>
+      </target>
+      
+      <target name="uninstall">
+      <echo message="uninstall" />
+
+         <exec executable="${ADTPath}" dir="${FDTProjectPath}">
+            <arg value="-uninstallApp"/>
+            <arg value="-platform"/>
+            <arg value="ios"/>
+            <arg value="-appid"/>
+            <arg value="${application.id}"/>
+         </exec>
+      </target>
+</project>

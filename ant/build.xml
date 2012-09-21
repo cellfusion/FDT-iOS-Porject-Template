@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${projectName} iOSbuild">
+	<property name="developPassword" value="test"/>
+	<property name="releasePassword" value="value"/>
+	
+	<target name="1. Simulator Test" depends="init">
+		<echo message="iOS Simulator test Build"/>
+		<ant antfile="simulator.xml" target="package_test"/>
+	</target>
+	
+	<target name="2. Simulator Debug" depends="init">
+		<echo message="iOS Simulator debug Build"/>
+		<ant antfile="simulator.xml" target="package_debug"/>
+	</target>
+	
+	<target name="3. Device Test" depends="init">
+		<echo message="iOS Device test Build"/>
+		<ant antfile="device.xml" target="package_test"/>
+	</target>
+		
+	<target name="4. Device Debug" depends="init">
+		<echo message="iOS Device debug Build"/>
+		<ant antfile="device.xml" target="package_debug"/>
+	</target>
+	
+	<target name="5. Device Test Interpreter" depends="init">
+		<echo message="iOS Device test interpreter Build"/>
+		<ant antfile="device.xml" target="package_test_interpreter" />
+	</target>
+		
+	<target name="6. Device Debug Interpreter" depends="init">
+		<echo message="iOS Device debug interpreter Build"/>
+		<ant antfile="device.xml" target="package_debug_interpreter"/>
+	</target>
+	
+	<target name="8. Device Release" depends="init">
+		<echo message="iOS Release Build"/>
+		<ant antfile="device.xml" target="package_app_store" />
+	</target>
+			
+	<target name="7. Device Ad-hoc" depends="init">
+		<echo message="iOS Ad-hoc Build"/>
+		<ant antfile="device.xml" target="package_ad_hoc"/>
+	</target>
+	
+	<target name="echo" depends="init">
+		<ant antfile="echo.xml" target="echo"/>
+	</target>
+	
+	<target name="init">
+		<fdt.loadProjectProperties/>
+		<property file="${FDTProjectPath}/.settings/com.powerflasher.fdt.core.prefs"/>
+		<xmlproperty file="${FDTProjectPath}/${com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR}" collapseAttributes="true"/>
+		
+		<script language="javascript">
+			<![CDATA[
+				projectPath = project.getProperty("FDTProjectPath");
+				outputDir = project.getProperty("com.powerflasher.fdt.core.DefaultOutputFolder");
+				deplayLocation = project.getProperty("com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION");
+				if (deplayLocation == "" || deplayLocation == undefined) {
+					project.setProperty("com.powerflasher.fdt.core.mobile.iOS.DEPLOY.LOCATION", outputDir + "/" + project.getProperty("application.filename") + ".ipa");
+				}
+			
+				packageContent = project.getProperty("com.powerflasher.fdt.core.mobile.iOS.PACKAGE.CONTENT");
+				contentsOption = "";
+				if (packageContent == undefined) {
+					contentsOption += "-C " + projectPath + "/" + outputDir + " " + project.getProperty("application.filename").swf + " ";
+				} else {
+					contents = packageContent.split(";");
+			
+					for (var i = 0; i < contents.length; i++) {
+						var index = contents[i].indexOf(">");
+						
+						if (index >= 0) {
+							str = contents[i].substr(0, index-1);
+				
+							if (str == project.getProperty("com.powerflasher.fdt.core.mobile.iOS.MOBILE.DESCRIPTOR")) {
+								continue;
+							}
+				
+							dirname = str.split("/")[0];
+							filename = str.split("/")[1];
+				
+							contentsOption += "-C " + projectPath + "/" + dirname + " " + filename + " ";
+						} else {
+							contentsOption += "-C " + projectPath + " " + contents[i] + " ";
+						}
+					}
+				}
+			
+				project.setNewProperty("contentsOption", contentsOption);
+			]]>
+		</script>
+		
+		<property name="ADTPath" value="${FDTProjectSdkPath}/bin/adt"/>
+	</target>
+</project>
